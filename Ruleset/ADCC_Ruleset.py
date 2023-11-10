@@ -1,6 +1,7 @@
 """ This module provides Ruleset main module. """
 
 import sqlite3
+from .General_Rules import General_Rules
 
 genders = ["male", "female"]
 levels =["beginner", "intermediate", "advanced", "professional"]
@@ -8,10 +9,6 @@ levels =["beginner", "intermediate", "advanced", "professional"]
 class Ruleset:
     def __init__(self):
         self._competitor = _Competitor()
-
-    def display_rules(self):
-        #TODO: generate rules based on given data
-        pass
 
     def determine_ruleset(self):
             age = self._competitor.get_age()
@@ -90,14 +87,56 @@ class Ruleset:
                     """, (weight, weight))
             else:
                 print("No appropriate weight class currently exists.")
-                
+
             result = cursor.fetchone()
-            
+
             if result:
                 weight_category = result[0]
-                print(f'The user falls under the category: {weight_category}')
+                print(f'You would compete in the {weight_category} category for your age group.')
             else:
-                print('No matching weight category')
+                print('No matching weight category currently available. Consider the absolute division.')
+            
+            print()
+            print("Here are the general rules of the ADCC Tournament: ")
+            
+            General_Rules.print_General_Rules()
+
+            print()
+            print("Given the information you have provided the following rules also apply in terms of illegal moves:")
+
+            if(level == "beginner"):
+                try:
+                    beginner_file_path = "Text_Data\\Beginner_Illegal_Moves.txt"
+                    with open(beginner_file_path, "r") as file:
+                        beginner_illegal_moves = file.read()
+                        print(beginner_illegal_moves)
+                except FileNotFoundError:
+                    print(f"ERROR: File Text_Data/General_Rules.txt not found")
+                except Exception as e:
+                    print(f"ERROR: {e}")
+            elif level in ["intermediate", "advanced"]:
+                try:
+                    intermediate_file_path = "Text_Data\\Intermediate_Illegal_Moves.txt"
+                    with open(intermediate_file_path, "r") as file:
+                        intermediate_illegal_moves = file.read()
+                        print(intermediate_illegal_moves)
+                except FileNotFoundError:
+                    print(f"ERROR: File Text_Data/General_Rules.txt not found")
+                except Exception as e:
+                    print(f"ERROR: {e}")
+            elif(level == "professional"):
+                try:
+                    professional_file_path = "Text_Data\\Professional_Illegal_Moves.txt"
+                    with open(professional_file_path, "r") as file:
+                        professional_illegal_moves = file.read()
+                        print(professional_illegal_moves)
+                except FileNotFoundError:
+                    print(f"ERROR: File Text_Data/General_Rules.txt not found")
+                except Exception as e:
+                    print(f"ERROR: {e}")
+            
+            
+            
 
 class _Competitor:
     def __init__(self):
