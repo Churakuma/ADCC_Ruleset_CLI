@@ -10,6 +10,7 @@ except (ImportError):
 def main():
     ars = parse_cmd_line_arguments()
     ruleset = Ruleset()
+    ruleset.determine_ruleset()
 
 def parse_cmd_line_arguments():
     parser = argparse.ArgumentParser(
@@ -18,6 +19,6 @@ def parse_cmd_line_arguments():
         epilog= "Thanks for using the ADCC Ruleset Generator!"
     )
     parser.version = f"ADCC Ruleset Generator v{__version__}"
-    parser.add_argument("v", "--version", action="version")
+    parser.add_argument("-v", "--version", action="version")
 
     return parser.parse_args()
